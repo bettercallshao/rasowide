@@ -13,9 +13,9 @@ socketio = SocketIO(app)
 def root():
     return app.send_static_file('index.html')
 
-@socketio.on('my event')
+@socketio.on('chat message')
 def handle_my_custom_event(json):
-    print('received json: ' + str(json))
+    return socketio.emit('chat message', json)
 
 if __name__ == "__main__":
     socketio.run(app)
