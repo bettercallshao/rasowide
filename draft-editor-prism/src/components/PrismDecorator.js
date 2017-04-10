@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Map, List } from 'immutable';
 import Prism from 'prismjs';
 
+// https://gist.github.com/SamyPesse/0690602631c19aedcfa0a28feabb9d2b
+
 class PrismDecorator {
   constructor(grammar) {
     this.grammar = grammar;

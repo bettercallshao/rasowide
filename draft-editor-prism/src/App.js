@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import CodeEditorWithDeco from './components/CodeEditorWithDeco';
+import CodeEditor from './components/CodeEditor';
 
 class App extends Component {
   render() {
@@ -16,7 +16,7 @@ class App extends Component {
           <button className="tablinks">+</button>
         </div>
         <div className="editor">
-          <CodeEditorWithDeco />
+          <CodeEditor />
         </div>
       </div>
     );
