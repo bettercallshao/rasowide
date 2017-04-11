@@ -1,21 +1,83 @@
 '''
 ' Test app for flask socketio for python 2.7
 ' @author tim.tan
+'
+' ctrl {
+'   id
+'   act
+'   error
+' }
+'
+' data {
+'   id
+'   payload
+'   error
+' }
+'
+' Server is wrapped in a class per flask
+' (my understanding of) guideline
 '''
 
-from flask import Flask, request, render_template
+from uuid import uuid4
+from flask import Flask
 from flask_socketio import SocketIO
 
-app = Flask(__name__)
-socketio = SocketIO(app)
+# shell session implementation
+from BashSession import BashSession
 
+# flask
+app = Flask(__name__)
+io = SocketIO(app)
+
+# terminals
+terms = {}
+
+# HTML serving
 @app.route('/')
 def root():
-    return app.send_static_file('index.html')
+  return app.send_static_file('index.html')
 
-@socketio.on('chat message')
-def handle_my_custom_event(json):
-    return socketio.emit('chat message', json)
+# control requests
+@io.on('ctrl')
+def handle_ctrl(json):
+
+  if 'act' not in json:
+    # ignore
+    return
+
+  if json['act'] == 'new':
+    json['id'] = str(uuid4())
+    json['error'] = 'ok'
+    terms[json['id']] = BashSession(
+      lambda x: respond_data(json['id'], x))
+    io.emit('ctrl', json)
+
+  else:
+    json['id'] = ''
+    json['error'] = 'unkown operation'
+    io.emit('ctrl', json)
+
+# write data back to client
+def respond_data(uuid, payload):
+  json = {}
+  json['id'] = uuid
+  json['error'] = 0
+  json['payload'] = payload
+  io.emit('data', json)
+
+# payload requests
+@io.on('data')
+def handle_data(json):
+
+  # must have valid id
+  if 'id' not in json or json['id'] not in terms:
+    json['error'] = 'invalid id'
+    json['payload'] = ''
+    io.emit('data', json)
+    return
+
+  # pass payload to bash session
+  terms[json['id']].write(json['payload'])
 
 if __name__ == "__main__":
-    socketio.run(app)
+  io.run(app)

@@ -4,13 +4,12 @@
     <title>Socket.IO chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
+      body { font: 13px monospace; }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
       #messages { margin-bottom: 40px }
     </style>
   </head>
@@ -24,13 +23,29 @@
     <script>
       $(function () {
         var socket = io();
+        var id = '';
+        // request new session
+        socket.emit('ctrl', { 'act': 'new' })
+        socket.on('ctrl', function(msg){
+          id = msg.id;
+        });
+        // command
         $('form').submit(function(){
-          socket.emit('chat message', $('#m').val());
+          socket.emit('data', {
+            'id': id,
+            'payload': $('#m').val() + '\n'
+          });
+          $('#messages').append($('<li>').text('$ ' + $('#m').val()));
+          window.scrollTo(0, document.body.scrollHeight);
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+        socket.on('data', function(msg){
+          var text = JSON.stringify(msg, null, 2);
+          if (msg.error == 0) {
+            text = msg.payload;
+          }
+          $('#messages').append($('<li>').text(text));
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
