@@ -80,4 +80,4 @@ def handle_data(json):
   terms[json['id']].write(json['payload'])
 
 if __name__ == "__main__":
-  io.run(app)
+  io.run(app, '0.0.0.0', 5000)
