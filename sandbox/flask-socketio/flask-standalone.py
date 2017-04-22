@@ -19,7 +19,7 @@
 '''
 
 from uuid import uuid4
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_socketio import SocketIO
 
 # shell session implementation
@@ -35,7 +35,12 @@ terms = {}
 # HTML serving
 @app.route('/')
 def root():
-  return app.send_static_file('index.html')
+  return send_from_directory('', 'console.html')
+
+@app.route('/js/<path:path>')
+def send_js(path):
+  print("asdf")
+  return send_from_directory('js', path)
 
 # control requests
 @io.on('ctrl')
