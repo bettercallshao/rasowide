@@ -34,13 +34,16 @@ terms = {}
 
 # HTML serving
 @app.route('/')
-def root():
+def send_default():
   return send_from_directory('', 'console.html')
 
 @app.route('/js/<path:path>')
 def send_js(path):
-  print("asdf")
   return send_from_directory('js', path)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+  return send_from_directory('css', path)
 
 # control requests
 @io.on('ctrl')
