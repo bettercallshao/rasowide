@@ -1,53 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://rawgit.com/hydiant/jq-console/master/lib/jqconsole.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/hydiant/jq-console/master/css/ansi.css"/>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px monospace; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages { margin-bottom: 40px }
+    /* The inner console element. */
+    .jqconsole {
+        padding: 10px;
+    }
+    /* The cursor. */
+    .jqconsole-cursor {
+        background-color: white;
+    }
+    /* The cursor color when the console looses focus. */
+    .jqconsole-blurred .jqconsole-cursor {
+        background-color: grey;
+    }
+    /* The header */
+    .jqconsole-header {
+        color: white;
+    }
+    /* The current prompt text color */
+    .jqconsole-prompt {
+        color: white;
+    }
+    /* The command history */
+    .jqconsole-old-prompt {
+        color: white;
+        font-weight: normal;
+    }
+    /* The text color when in input mode. */
+    /* \todo doesn't actually work */
+    .jqconsole-input {
+        color: white;
+    }
+    /* Previously entered input. */
+    .jqconsole-old-input {
+        color: white;
+        font-weight: normal;
+    }
+    /* The text color of the output. */
+    .jqconsole-output {
+        color: grey;
+    }
+     /* The text color of the output. */
+    .jqconsole-error {
+        color: red;
+    }
     </style>
+    <title>rasowide console</title>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <div id="console">
+      <style>
+        div {
+          background-color: #2C001E;
+        }
+      </style>
+  </div>
     <script>
       $(function () {
+        // init modules
         var socket = io();
+        var jqconsole = $('#console').jqconsole('rasowide console\n', '$ ');
+
+        // init cli session via socketio
         var id = '';
-        // request new session
-        socket.emit('ctrl', { 'act': 'new' })
-        socket.on('ctrl', function(msg){
+        socket.emit('ctrl', { 'act': 'new' });
+        socket.on('ctrl', function(msg) {
           id = msg.id;
         });
-        // command
-        $('form').submit(function(){
-          socket.emit('data', {
-            'id': id,
-            'payload': $('#m').val() + '\n'
-          });
-          $('#messages').append($('<li>').text('$ ' + $('#m').val()));
-          window.scrollTo(0, document.body.scrollHeight);
-          $('#m').val('');
-          return false;
-        });
-        socket.on('data', function(msg){
-          var text = JSON.stringify(msg, null, 2);
+
+        // response printing
+        socket.on('data', function(msg) {
           if (msg.error == 0) {
-            text = msg.payload;
+            jqconsole.Write(msg.payload, 'jqconsole-output');
+          } else {
+            jqconsole.Write(JSON.stringify(msg, null, 2), 'jqconsole-error');
           }
-          $('#messages').append($('<li>').text(text));
-          window.scrollTo(0, document.body.scrollHeight);
         });
+
+        // start jq console
+        var startPrompt = function () {
+          // history enabled
+          jqconsole.Prompt(true, function (input) {
+            socket.emit('data', {
+              'id': id,
+              'payload': input + '\n'
+            });
+            // restart prompt
+            startPrompt();
+          });
+        };
+        startPrompt();
       });
     </script>
   </body>
