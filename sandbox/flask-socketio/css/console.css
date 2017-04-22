@@ -1,0 +1,45 @@
+/* style sheet for rasowide console */
+/* The inner console element. */
+.jqconsole {
+    padding: 10px;
+    background-color: #2C001E;
+}
+/* The cursor. */
+.jqconsole-cursor {
+    background-color: white;
+}
+/* The cursor color when the console looses focus. */
+.jqconsole-blurred .jqconsole-cursor {
+    background-color: grey;
+}
+/* The header */
+.jqconsole-header {
+    color: white;
+}
+/* The current prompt text color */
+.jqconsole-prompt {
+    color: white;
+}
+/* The command history */
+.jqconsole-old-prompt {
+    color: white;
+    font-weight: normal;
+}
+/* The text color when in input mode. */
+/* \todo doesn't actually work */
+.jqconsole-input {
+    color: white;
+}
+/* Previously entered input. */
+.jqconsole-old-input {
+    color: white;
+    font-weight: normal;
+}
+/* The text color of the output. */
+.jqconsole-output {
+    color: grey;
+}
+ /* The text color of the output. */
+.jqconsole-error {
+    color: red;
+}
