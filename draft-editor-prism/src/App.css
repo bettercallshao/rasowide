@@ -18,6 +18,19 @@
   font-size: large;
 }
 
+.File-selector {
+  margin-top: 10%;
+}
+
+.Btn-home {
+
+}
+
+.editor-menu {
+  text-align: left;
+  margin-bottom: 2%;
+}
+
 .editor {
   padding: 0;
 }

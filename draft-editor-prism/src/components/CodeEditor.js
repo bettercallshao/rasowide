@@ -3,13 +3,15 @@ import {
   Editor,
   EditorState,
   RichUtils,
-  convertFromRaw
+  convertFromRaw,
+  convertToRaw,
 } from 'draft-js';
 import { Map, List } from 'immutable';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
 import PrismDecorator from './PrismDecorator';
 import './styles.css';
+import FileSaver from 'file-saver';
 
 const styleMap = {
   CODE: {
@@ -41,7 +43,19 @@ class CodeEditor extends Component {
     this.getEditorState = () => this.state.editorState;
     this.onChange = (editorState) => this.setState({editorState});
     this.focus = () => this.refs.editor.focus();
-    this.logState = () => console.log(this.state.editorState.toJS());
+    // this.logState = () => console.log(this.state.editorState.toJS());
+    this.logState = () => {
+      // console.log(convertToRaw(this.state.editorState.getCurrentContent()));
+      console.log(this.state.editorState.getCurrentContent().getPlainText());
+    };
+    this.saveToFile = this.saveToFile.bind(this);
+  }
+
+  saveToFile() {
+    let text = this.state.editorState.getCurrentContent().getPlainText();
+    const filename = "test";
+    let blob = new Blob([text], { type: "text/plain; charset=utf-8" });
+    FileSaver.saveAs(blob, filename + ".py");
   }
 
   render() {
@@ -57,12 +71,6 @@ class CodeEditor extends Component {
             customStyleMap={styleMap}
           />
         </div>
-        {/* <input
-          onClick={this.logState}
-          style={styles.button}
-          type="button"
-          value="Log State"
-        /> */}
       </div>
     );
   }
