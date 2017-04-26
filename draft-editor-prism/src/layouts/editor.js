@@ -39,6 +39,7 @@ class Editor extends Component {
         <div className="editor">
           <CodeEditor
             ref={(editorProps) => { this.editorProps = editorProps }}
+            contentState={this.props.contentState}
           />
         </div>
       </div>
@@ -48,6 +49,7 @@ class Editor extends Component {
 
 Editor.propTypes = {
   onClickGoHome: PropTypes.func.isRequired,
+  contentState: PropTypes.string.isRequired,
 }
 
 export default Editor;

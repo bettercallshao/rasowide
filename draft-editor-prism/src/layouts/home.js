@@ -6,11 +6,35 @@ import Editor from './editor';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { filetype: 'none' };
+    this.state = {
+      filetype: 'none',
+      contentState: '',
+    };
 
     this.onClickNew = () => this.setState({ filetype: 'new' });
-    this.onClickOpen = () => this.setState({ filetype: 'open' });
-    this.onClickGoHome = () => this.setState({ filetype: 'none' });
+    this.onClickOpen = () => {
+      this.selectFile.click();
+    }
+    this.readFile = () => {
+      const file = this.selectFile.files[0];
+      const filetype = /text.*/;
+      if (file.type.match(filetype)) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          console.log(reader.result);
+          this.setState({ contentState: reader.result });
+        };
+        reader.onloadend = (e) => {
+          this.setState({ filetype: 'open' })
+        }
+        reader.readAsText(file);
+      } else {
+        console.log('Invalid file type');
+      }
+    }
+    this.onClickGoHome = () => {
+      this.setState({ filetype: 'none', contentState: '' });
+    };
   }
 
   render() {
@@ -25,10 +49,20 @@ class Home extends Component {
             </div>
             <div className="File-selector">
               <button className="Btn-home" onClick={this.onClickNew}>Create New</button>
-              <button className="Btn-home">Open and Load</button>
+              <button className="Btn-home" onClick={this.onClickOpen}>Open and Load</button>
+              <input
+                id="selectFile"
+                type="file"
+                style={{ "display": "none" }}
+                ref={ref => this.selectFile = ref}
+                onChange={this.readFile}
+              ></input>
             </div>
           </div>
-          : <Editor onClickGoHome={this.onClickGoHome}/>
+          : <Editor
+            onClickGoHome={this.onClickGoHome}
+            contentState={this.state.contentState}
+          />
         }
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Editor,
   EditorState,
@@ -27,12 +28,18 @@ class CodeEditor extends Component {
     super(props);
 
     let decorator = new PrismDecorator(Prism.languages.python);
+    let text = '';
+    if (this.props.contentState === '') {
+      text = `# created at ${new Date()}`;
+    } else {
+      text = this.props.contentState;
+    }
     let contentState = convertFromRaw({
       entityMap: {},
       blocks: [
         {
           type: 'code-block',
-          text: `# created at ${new Date()}`
+          text: text,
         }
       ]
     })
@@ -65,7 +72,6 @@ class CodeEditor extends Component {
           <Editor
             editorState={this.state.editorState}
             onChange={this.onChange}
-            placeholder="Start coding..."
             ref="editor"
             spellCheck={true}
             customStyleMap={styleMap}
@@ -74,6 +80,10 @@ class CodeEditor extends Component {
       </div>
     );
   }
+}
+
+CodeEditor.propTypes = {
+  contentState: PropTypes.string.isRequired,
 }
 
 export default CodeEditor;
