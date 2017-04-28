@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Editor,
   EditorState,
-  RichUtils,
   convertFromRaw,
-  convertToRaw,
 } from 'draft-js';
-import { Map, List } from 'immutable';
+// import { Map, List } from 'immutable';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
 import PrismDecorator from './PrismDecorator';
@@ -34,14 +32,13 @@ class CodeEditor extends Component {
     } else {
       text = this.props.contentState;
     }
+    const textBlocks = text.split('\n');
+    const blocks = textBlocks.map(block => (
+      { type: 'code-block', text: block }
+    ));
     let contentState = convertFromRaw({
       entityMap: {},
-      blocks: [
-        {
-          type: 'code-block',
-          text: text,
-        }
-      ]
+      blocks: blocks,
     })
 
     this.state = {
