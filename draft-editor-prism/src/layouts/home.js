@@ -9,9 +9,13 @@ class Home extends Component {
     this.state = {
       filetype: 'none',
       contentState: '',
+      filename: '',
     };
 
-    this.onClickNew = () => this.setState({ filetype: 'new' });
+    this.onClickNew = () => this.setState({
+      filetype: 'new',
+      filename: 'untitiled',
+    });
     this.onClickOpen = () => {
       this.selectFile.click();
     }
@@ -25,7 +29,10 @@ class Home extends Component {
           this.setState({ contentState: reader.result });
         };
         reader.onloadend = (e) => {
-          this.setState({ filetype: 'open' })
+          this.setState({
+            filetype: 'open',
+            filename: file.name.split('.')[0],
+          });
         }
         reader.readAsText(file);
       } else {
@@ -58,10 +65,14 @@ class Home extends Component {
                 onChange={this.readFile}
               ></input>
             </div>
+            <div>
+              Create new .py file or load existing files from your machine
+            </div>
           </div>
           : <Editor
             onClickGoHome={this.onClickGoHome}
             contentState={this.state.contentState}
+            filename={this.state.filename}
           />
         }
       </div>

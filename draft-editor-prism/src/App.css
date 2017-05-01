@@ -12,6 +12,7 @@
   height: 150px;
   padding: 20px;
   color: white;
+  margin-bottom: 72px;
 }
 
 .App-intro {
@@ -19,16 +20,16 @@
 }
 
 .File-selector {
-  margin-top: 10%;
+  margin-bottom: 48px;
 }
 
 .Btn-home {
-
+  margin-right: 12px;
 }
 
 .editor-menu {
   text-align: left;
-  margin-bottom: 2%;
+  margin-bottom: 12px;
 }
 
 .editor {
@@ -37,6 +38,14 @@
 
 .tab {
   text-align: left;
+}
+
+.editor-header {
+  text-align: left;
+}
+
+.file-title {
+  /*margin-bottom: 6px;*/
 }
 
 @keyframes App-logo-spin {

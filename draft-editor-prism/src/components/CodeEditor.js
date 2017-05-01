@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Draft from 'draft-js';
 import {
   Editor,
   EditorState,
@@ -11,6 +12,7 @@ import 'prismjs/components/prism-python';
 import PrismDecorator from './PrismDecorator';
 import './styles.css';
 import FileSaver from 'file-saver';
+import CodeUtils from 'draft-js-code';
 
 const styleMap = {
   CODE: {
@@ -28,7 +30,7 @@ class CodeEditor extends Component {
     let decorator = new PrismDecorator(Prism.languages.python);
     let text = '';
     if (this.props.contentState === '') {
-      text = `# created at ${new Date()}`;
+      text = `# created at ${new Date()}\n\n`;
     } else {
       text = this.props.contentState;
     }
@@ -53,13 +55,63 @@ class CodeEditor extends Component {
       console.log(this.state.editorState.getCurrentContent().getPlainText());
     };
     this.saveToFile = this.saveToFile.bind(this);
+
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this.keyBindgFn = this.keyBindgFn.bind(this);
+    this.handleTab = this.handleTab.bind(this);
   }
 
   saveToFile() {
     let text = this.state.editorState.getCurrentContent().getPlainText();
-    const filename = "test";
-    let blob = new Blob([text], { type: "text/plain; charset=utf-8" });
-    FileSaver.saveAs(blob, filename + ".py");
+    if (this.props.filename !== '') {
+      let blob = new Blob([text], { type: "text/plain; charset=utf-8" });
+      FileSaver.saveAs(blob, this.props.filename + ".py");
+    } else {
+      alert('Invalid file name');
+    }
+  }
+
+  handleKeyCommand(command) {
+    let newState;
+    if (CodeUtils.hasSelectionInBlock(this.state.editorState)) {
+      newState = CodeUtils.handleKeyCommand(this.state.editorState, command);
+    }
+
+    if (!newState) {
+      newState = Draft.RichUtils.handleKeyCommand(this.state.editorState, command);
+    }
+
+    if (newState) {
+      this.onChange(newState);
+      return true;
+    }
+    return false;
+  }
+
+  keyBindgFn(e) {
+    let editorState = this.state.editorState;
+    let command;
+
+    if (CodeUtils.hasSelectionInBlock(editorState)) {
+      command = CodeUtils.getKeyBinding(e);
+    }
+    if (command) {
+      return command;
+    }
+
+    return Draft.getDefaultKeyBinding(e);
+  }
+
+  handleTab(e) {
+    let editorState = this.state.editorState;
+
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return;
+    }
+
+    this.onChange(
+      CodeUtils.handleTab(e, editorState)
+    );
   }
 
   render() {
@@ -72,6 +124,9 @@ class CodeEditor extends Component {
             ref="editor"
             spellCheck={true}
             customStyleMap={styleMap}
+            keyBindgFn={this.keyBindgFn}
+            handleKeyCommand={this.handleKeyCommand}
+            onTab={this.handleTab}
           />
         </div>
       </div>
@@ -81,6 +136,7 @@ class CodeEditor extends Component {
 
 CodeEditor.propTypes = {
   contentState: PropTypes.string.isRequired,
+  filename: PropTypes.string.isRequired,
 }
 
 export default CodeEditor;
