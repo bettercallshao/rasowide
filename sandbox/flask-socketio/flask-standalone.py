@@ -27,7 +27,7 @@ from BashSession import BashSession
 
 # flask
 app = Flask(__name__)
-io = SocketIO(app)
+io = SocketIO(app, async_mode='threading')
 
 # terminals
 terms = {}
