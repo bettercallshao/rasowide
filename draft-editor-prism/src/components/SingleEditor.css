@@ -10,7 +10,6 @@
 .RichEditor-editor {
   /*border-top: 1px solid #ddd;*/
   cursor: text;
-  line-height: 1px;
   font-size: 10px;
   margin-top: 0px;
   padding: 0;
@@ -49,9 +48,9 @@
 }
 
 .RichEditor-editor .code {
-  backgroundColor: rgba(0, 0, 0, 0.05);
-  fontFamily: "Inconsolata", "Menlo", "Consolas", monospace;
-  fontSize: 16;
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: "Inconsolata", "Menlo", "Consolas", monospace;
+  font-size: 16;
   padding: 2;
 }
 
