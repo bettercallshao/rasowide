@@ -8,7 +8,8 @@ class EditorPage extends Component {
     return (
       <div>
         <TabbedEditor
-          onGoHome={ this.props.onGoHome }
+          onGoHome={this.props.onGoHome}
+          sendData={this.props.sendData}
         />
       </div>
     );
@@ -17,6 +18,7 @@ class EditorPage extends Component {
 
 EditorPage.propTypes = {
   onGoHome: PropTypes.func.isRequired,
+  sendData: PropTypes.func.isRequired,
 }
 
 export default EditorPage;

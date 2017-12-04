@@ -21,7 +21,7 @@ class TabbedEditor extends Component {
 
     // Handle running the script
     this.onRun = () => {
-      // Todo
+      this.props.sendData('python ' + this.state.filename);
     }
 
     // Handle opening a uploaded file
@@ -81,6 +81,7 @@ class TabbedEditor extends Component {
 
 TabbedEditor.propTypes = {
   onGoHome: PropTypes.func.isRequired,
+  sendData: PropTypes.func.isRequired,
 }
 
 export default TabbedEditor

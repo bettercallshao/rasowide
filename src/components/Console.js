@@ -10,6 +10,10 @@ class Console extends Component {
   constructor(props) {
     super(props);
 
+    // Keep socket as a member
+    this.socket = io();
+    this.id = '';
+
     this.makePrompt = (element) => {
       // init modules
       var banner = '' +
@@ -18,17 +22,15 @@ class Console extends Component {
       '####################\n';
       var prompt_ = '$ ';
       var jqconsole = element.jqconsole(banner, prompt_);
-      var socket = io();
 
       // init cli session via socketio
-      var id = '';
-      socket.emit('ctrl', { 'act': 'new' });
-      socket.on('ctrl', function(msg) {
-        id = msg.id;
+      this.socket.emit('ctrl', { 'act': 'new' });
+      this.socket.on('ctrl', (msg) => {
+        this.id = msg.id;
       });
 
       // response printing
-      socket.on('data', function(msg) {
+      this.socket.on('data', (msg) => {
         if (msg.error === 0) {
           jqconsole.Write(msg.payload, 'jqconsole-output');
         } else {
@@ -37,18 +39,25 @@ class Console extends Component {
       });
 
       // start jq console
-      var startPrompt = function () {
+      this.startPrompt = () => {
         // history enabled
-        jqconsole.Prompt(true, function (input) {
-          socket.emit('data', {
-            'id': id,
-            'payload': input + '\n'
-          });
+        jqconsole.Prompt(true, (input) => {
+          this.sendData(input);
           // restart prompt
-          startPrompt();
+          this.startPrompt();
         });
       };
-      startPrompt();
+      this.startPrompt();
+    }
+
+    // Allow parent to call this
+    this.sendData = (data) => {
+      console.log(this.id);
+      console.log("$" + data + "$");
+      this.socket.emit('data', {
+        'id': this.id,
+        'payload': data + '\n'
+      });
     }
   }
 
