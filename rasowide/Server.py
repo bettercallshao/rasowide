@@ -1,7 +1,7 @@
 """ Rasowide Server
 """
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_socketio import SocketIO
 import os
 from uuid import uuid4
@@ -27,6 +27,8 @@ def send_index():
 
 @app.route('/favicon.ico')
 def send_favicon():
+  """ Serve favicon
+  """
   return send_from_directory(root, 'favicon.ico')
 
 @app.route('/static/<path:path>')
@@ -34,6 +36,15 @@ def send_static(path):
   """ Serve static files
   """
   return send_from_directory(root + '/static', path)
+
+@app.route('/upload/<string:filename>', methods=['POST'])
+def handle_upload(filename):
+  """ Serve upload request
+  """
+  # Save to current working directory as binary
+  with open(cwd + '/' + filename, 'wb') as f:
+    f.write(request.data)
+  return 'ok'
 
 @io.on('ctrl')
 def handle_ctrl(json):

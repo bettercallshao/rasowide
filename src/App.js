@@ -15,11 +15,16 @@ class App extends Component {
     }
 
     this.onGoEditor = () => {
-      this.setState({page: 'editor'})
+      this.setState({page: 'editor'});
     }
 
     this.onGoHome = () => {
-      this.setState({page: 'home'})
+      this.setState({page: 'home'});
+    }
+
+    // Route data sending to console
+    this.sendData = (data) => {
+      this.console.sendData(data);
     }
 
     this.getTop = () => {
@@ -35,6 +40,7 @@ class App extends Component {
           <EditorPage
             // Handle page switch
             onGoHome={this.onGoHome}
+            sendData={this.sendData}
           />)
       }
     }
