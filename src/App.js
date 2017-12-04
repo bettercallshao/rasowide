@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import HomePage from './layouts/HomePage.js';
 import EditorPage from './layouts/EditorPage.js';
+import Console from './components/Console.js';
 
 // Entry point
 class App extends Component {
@@ -20,27 +21,50 @@ class App extends Component {
     this.onGoHome = () => {
       this.setState({page: 'home'})
     }
+
+    this.getTop = () => {
+      var page = this.state.page;
+      if (page === 'home') {
+        return (
+          <HomePage
+            // Handle page switch
+            onGoEditor={this.onGoEditor}
+          />)
+      } else if (page === 'editor') {
+        return (
+          <EditorPage
+            // Handle page switch
+            onGoHome={this.onGoHome}
+          />)
+      }
+    }
   }
 
   render() {
-    var page = this.state.page;
-    if (page === 'home') {
-      return (
-        // Home page
-        <HomePage
-          // Handle page switch
-          onGoEditor={this.onGoEditor}
-        />
-      );
-    } else if (page === 'editor') {
-      return (
-        // Editor page
-        <EditorPage
-          // Handle page switch
-          onGoHome={this.onGoHome}
-        />
-      );
+    const style = {
+      top: {
+        overflow: 'auto',
+        position: 'relative',
+        minHeight: '200px',
+      },
+      bottom: {
+        overflow: 'auto',
+        position: 'relative',
+        minHeight: '200px',
+      }
     }
+    return (
+      <div>
+        <div style={style.top}>
+          {this.getTop()}
+        </div>
+        <div style={style.bottom}>
+          <Console
+            ref={ o => { this.console = o; }}
+          />
+        </div>
+      </div>
+    );
   }
 }
 
