@@ -1,27 +1,36 @@
 <h3>Overview</h3>
-<p>Web-based python ide hosted on Raspberry Pi:</p>
+<p>Web Python IDE hosted Raspberry Pi</p>
+<h3>What it does</h3>
 <p>
   <ul>
-    <li>Work on your laptop</li>
-    <li>One-time RPi setup and headless</li>
-    <li>Remotely push changes to your RPi</li>
-  </ul>
-</p>
-<h3>How it will work</h3>
-<p>
-  <ul>
-    <li>Flask server on Pi</li>
-    <li>Setup websocket connection</li>
     <li>Edit script in browser</li>
-    <li>RPi server compiles and returns response</li>
-    <li>Client receives response</li>
+    <li>Run script on Pi</li>
+    <li>Simple setup</li>
   </ul>
 </p>
-<h3>Roadmap</h3>
+<h3>How to use</h3>
 <p>
   <ul>
-    <li>RPi server setup</li>
-    <li>Learn websocket</li>
-    <li>Web UI develop: code editor + console</li>
+    <li>git clone https://github.com/hydiant/rasowide</li>
+    <li>cd rasowide</li>
+    <li>npm install</li>
+    <li>npm run build</li>
+    <li>cd rasowide # again</li>
+    <li>pip install flask flask_socketio</li>
+    <li>python Server.py</li>
+  </ul>
+</p><h3>What's in it</h3>
+<p>
+  <ul>
+    <li>ReactJS</li>
+    <li>Python</li>
+    <li>Socket.IO</li>
+    <li>Flask</li>
+  </ul>
+</p><h3>What's coming</h3>
+<p>
+  <ul>
+    <li>Prettify overall UI</li>
+    <li>Multiple tabs</li>
   </ul>
 </p>
