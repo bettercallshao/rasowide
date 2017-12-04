@@ -21,7 +21,10 @@ class TabbedEditor extends Component {
 
     // Handle running the script
     this.onRun = () => {
-      this.props.sendData('python ' + this.state.filename);
+      this.single.onUpload(() => {
+        // This happens as callback after upload finishes
+        this.props.sendData('python ' + this.state.filename);
+      });
     }
 
     // Handle opening a uploaded file

@@ -94,6 +94,21 @@ class SingleEditor extends Component {
         alert('Invalid file name');
       }
     }
+
+    // Return text to parent
+    this.onUpload = (cb) => {
+      let text = this.state.editorState.getCurrentContent().getPlainText();
+      if (this.props.filename !== '') {
+        fetch('/upload/' + this.props.filename, {
+          method: 'post',
+          body: text
+         })
+         // Call callback only after we are done
+         .then(cb);
+      } else {
+        alert('Invalid file name');
+      }
+    }
   }
 
   render() {

@@ -52,8 +52,8 @@ class Console extends Component {
 
     // Allow parent to call this
     this.sendData = (data) => {
-      console.log(this.id);
-      console.log("$" + data + "$");
+      // Keep here for debugging, console.log doesn't survive optimization
+      //alert(this.id + " $" + data + "$");
       this.socket.emit('data', {
         'id': this.id,
         'payload': data + '\n'
