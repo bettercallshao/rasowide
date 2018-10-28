@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import Draft, {
   Editor,
-  EditorState,
-  ContentState,
+  convertFromRaw,
 } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import CodeUtils from 'draft-js-code';
@@ -13,7 +12,8 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
 import 'prismjs/themes/prism.css';
 
-import PrismDecorator from './PrismDecorator';
+import PrismDecorator from './PrismDecorator.js';
+
 import './SingleEditor.css';
 
 class SingleEditor extends Component {
@@ -26,10 +26,18 @@ class SingleEditor extends Component {
       text = `# created at ${new Date()}\n\n`;
     }
     // Make content state from text
-    let contentState = ContentState.createFromText(text);
+    let contentState = convertFromRaw({
+      entityMap: {},
+      blocks: [
+        {
+          type: 'code-block',
+          text: text,
+        },
+      ]
+    })
     // Make editor state from content state and decorator
     this.state = {
-      editorState: EditorState.createWithContent(contentState,
+      editorState: Draft.EditorState.createWithContent(contentState,
         new PrismDecorator(Prism.languages.python)),
     };
 
