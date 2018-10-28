@@ -49,6 +49,7 @@ class TabbedEditor extends Component {
   }
 
   render() {
+    const style = { paddingTop: "10px" };
     return (
       <div>
         <EditorMenu
@@ -57,7 +58,7 @@ class TabbedEditor extends Component {
           onOpen={this.onOpen}
           onSave={this.onSave}
         />
-        <Tabs>
+        <Tabs style={style}>
           <TabList>
             <Tab>
               <InlineEdit

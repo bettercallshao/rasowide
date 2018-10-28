@@ -48,6 +48,15 @@ class App extends Component {
 
   render() {
     const style = {
+      box: {
+        padding: '25px',
+        backgroundColor: '#399A4F',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
       top: {
         overflow: 'auto',
         position: 'relative',
@@ -56,11 +65,12 @@ class App extends Component {
       bottom: {
         overflow: 'auto',
         position: 'relative',
-        minHeight: '200px',
+        minHeight: '600px',
+        marginTop: '20px'
       }
     }
     return (
-      <div>
+      <div style={style.box}>
         <div style={style.top}>
           {this.getTop()}
         </div>

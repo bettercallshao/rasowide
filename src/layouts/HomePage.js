@@ -12,11 +12,10 @@ class HomePage extends Component {
         textAlign: 'center'
       },
       header: {
-        backgroundColor: '#222',
         height: '150px',
         padding: '20px',
         color: 'white',
-        marginBottom: '72px'
+        marginBottom: '20px'
       },
       logo: {
         animation: 'logo-spin infinite 20s linear',

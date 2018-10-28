@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dropzone from 'react-dropzone'
+import Dropzone from 'react-dropzone';
 
 class EditorMenu extends Component {
   constructor(props) {
@@ -27,15 +27,19 @@ class EditorMenu extends Component {
   }
 
   render() {
+    const style = {
+      display: 'inline-block',
+      borderColor: '#262',
+      borderStyle: 'dashed',
+      position: 'relative',
+    }
     return (
       <div>
+        <Dropzone style={style} onDrop={this.onDrop}>
+          <button> Open </button>
+        </Dropzone>
         <button onClick={() => this.props.onOpen('', '')}> New </button>
         <button onClick={this.props.onRun}> Run </button>
-        <Dropzone
-          onDrop={this.onDrop}
-        >
-          Open
-        </Dropzone>
         <button onClick={this.props.onSave}> Save </button>
         <button onClick={this.props.onGoHome}> Home </button>
       </div>
