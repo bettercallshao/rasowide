@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import HomePage from './layouts/HomePage.js';
 import EditorPage from './layouts/EditorPage.js';
 import Console from './components/Console.js';
+import './App.css';
 
 // Entry point
 class App extends Component {
@@ -48,6 +49,9 @@ class App extends Component {
 
   render() {
     const style = {
+      box: {
+        padding: '25px',
+      },
       top: {
         overflow: 'auto',
         position: 'relative',
@@ -56,11 +60,12 @@ class App extends Component {
       bottom: {
         overflow: 'auto',
         position: 'relative',
-        minHeight: '200px',
+        minHeight: '400px',
+        marginTop: '20px'
       }
     }
     return (
-      <div>
+      <div style={style.box}>
         <div style={style.top}>
           {this.getTop()}
         </div>
