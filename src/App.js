@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import HomePage from './layouts/HomePage.js';
 import EditorPage from './layouts/EditorPage.js';
 import Console from './components/Console.js';
+import './App.css';
 
 // Entry point
 class App extends Component {
@@ -50,12 +51,6 @@ class App extends Component {
     const style = {
       box: {
         padding: '25px',
-        backgroundColor: '#399A4F',
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
       },
       top: {
         overflow: 'auto',
@@ -65,7 +60,7 @@ class App extends Component {
       bottom: {
         overflow: 'auto',
         position: 'relative',
-        minHeight: '600px',
+        minHeight: '400px',
         marginTop: '20px'
       }
     }
